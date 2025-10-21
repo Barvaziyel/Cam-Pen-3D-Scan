@@ -6,7 +6,7 @@ https://github.com/user-attachments/assets/1c49a74f-5b52-4437-8f15-c5890c38e590
 
 A Python implementation of the paper "3D photography on your desk" that reconstructs 3D scenes from a single non-moving camera using shadow-based projective geometry.
 
-**Authors:** Ohad Klein, Aviel Raclaw  
+**Authors:** [Ohad Klein](https://github.com/ohadklein11), [Aviel Raclaw](https://github.com/Barvaziyel)  
 **Based on:** [3D photography on your desk paper](https://www-labs.iro.umontreal.ca/~roys/predoc/3dphotography.pdf)
 
 📊 **For detailed mathematical explanations and deeper project insights, see our presentation:** [`v3d final project.pptx`](v3d%20final%20project.pptx)
