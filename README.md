@@ -91,7 +91,7 @@ You need to modify the parameters in `example_run/conf.py` or create your own co
 1. **Place object for scanning** in front of the camera
 2. **Film while slowly moving a pencil-like object** across the light source, creating a moving shadow:
 
-![Scanning Process](readme_images/MOVIE.mp4)
+https://github.com/user-attachments/assets/1c49a74f-5b52-4437-8f15-c5890c38e590
 
 3. **Ensure good lighting conditions** - bright background and objects work best
 
