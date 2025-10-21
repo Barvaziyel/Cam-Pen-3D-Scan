@@ -121,35 +121,16 @@ The `main.py` script performs these steps in sequence:
 
 ## Results
 
-### Example Reconstructions
+### 🎯 Example Reconstructions
 
 <div align="center">
-  <img src="readme_images/image10.png" width="45%" alt="3D Reconstruction Results 1">
-  <img src="readme_images/image11.png" width="45%" alt="3D Reconstruction Results 2">
+  <img src="readme_images/image10.png" width="45%">
+  <img src="readme_images/image11.png" width="45%">
 </div>
 
-### Input vs Output Comparison
+### 📊 Input vs Output Comparison
 
-#### Example 1: Basic Object Reconstruction
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center"><b>Input Scene</b></td>
-      <td align="center"><b>3D Output</b></td>
-    </tr>
-    <tr>
-      <td><img src="readme_images/image12.png" width="100%" alt="Input Scene 1"></td>
-      <td><img src="readme_images/image13.png" width="100%" alt="3D Output 1"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><img src="readme_images/image14.png" width="100%" alt="3D Output 1 - Side View"></td>
-    </tr>
-  </table>
-</div>
-
-#### Example 2: Complex Object Reconstruction
+#### 🔸 Example 1: Basic Object Reconstruction
 
 <div align="center">
   <table>
@@ -158,23 +139,42 @@ The `main.py` script performs these steps in sequence:
       <td align="center"><b>3D Output</b></td>
     </tr>
     <tr>
-      <td><img src="readme_images/image15.png" width="100%" alt="Input Scene 2"></td>
-      <td><img src="readme_images/image16.png" width="100%" alt="3D Output 2"></td>
+      <td><img src="readme_images/image12.png" width="100%"></td>
+      <td><img src="readme_images/image13.png" width="100%"></td>
     </tr>
     <tr>
       <td></td>
-      <td><img src="readme_images/image17.png" width="100%" alt="3D Output 2 - Side View"></td>
+      <td><img src="readme_images/image14.png" width="100%"></td>
     </tr>
   </table>
 </div>
 
-### Height Sensitivity Analysis
+#### 🔸 Example 2: Complex Object Reconstruction
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Input Scene</b></td>
+      <td align="center"><b>3D Output</b></td>
+    </tr>
+    <tr>
+      <td><img src="readme_images/image15.png" width="100%"></td>
+      <td><img src="readme_images/image16.png" width="100%"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><img src="readme_images/image17.png" width="100%"></td>
+    </tr>
+  </table>
+</div>
+
+### 📏 Height Sensitivity Analysis
 
 The algorithm demonstrates high sensitivity to height differences, as shown in the pill box reconstruction:
 
 <div align="center">
-  <img src="readme_images/image18.png" width="45%" alt="Height Sensitivity - Top View">
-  <img src="readme_images/image19.png" width="45%" alt="Height Sensitivity - Side View">
+  <img src="readme_images/image18.png" style="width: 45%; height: auto;">
+  <img src="readme_images/image19.png" style="width: 45%; height: auto;">
 </div>
 
 ## Limitations
