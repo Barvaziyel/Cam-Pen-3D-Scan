@@ -5,6 +5,8 @@ A Python implementation of the paper "3D photography on your desk" that reconstr
 **Authors:** Ohad Klein, Aviel Raclaw  
 **Based on:** [3D photography on your desk paper](https://www-labs.iro.umontreal.ca/~roys/predoc/3dphotography.pdf)
 
+📊 **For detailed mathematical explanations and deeper project insights, see our presentation:** [`v3d final project.pptx`](v3d%20final%20project.pptx)
+
 ## Overview
 
 This project aims to reconstruct a 3D scene from a degenerate 2D setup, taken from a single non-moving camera. Using shadows cast on the scene and projective geometry, we can find the 3D location of each pixel in the image with respect to a predefined coordinate system.
@@ -121,33 +123,59 @@ The `main.py` script performs these steps in sequence:
 
 ### Example Reconstructions
 
-![3D Reconstruction Results](readme_images/image10.png)
-![3D Reconstruction Results](readme_images/image11.png)
+<div align="center">
+  <img src="readme_images/image10.png" width="45%" alt="3D Reconstruction Results 1">
+  <img src="readme_images/image11.png" width="45%" alt="3D Reconstruction Results 2">
+</div>
 
 ### Input vs Output Comparison
 
-**Input:**
-![Input Scene](readme_images/image12.png)
+#### Example 1: Basic Object Reconstruction
 
-**Output:**
-![3D Output](readme_images/image13.png)
-![3D Output](readme_images/image14.png)
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Input Scene</b></td>
+      <td align="center"><b>3D Output</b></td>
+    </tr>
+    <tr>
+      <td><img src="readme_images/image12.png" width="100%" alt="Input Scene 1"></td>
+      <td><img src="readme_images/image13.png" width="100%" alt="3D Output 1"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><img src="readme_images/image14.png" width="100%" alt="3D Output 1 - Side View"></td>
+    </tr>
+  </table>
+</div>
 
-**Another Example:**
+#### Example 2: Complex Object Reconstruction
 
-**Input:**
-![Input Scene](readme_images/image15.png)
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Input Scene</b></td>
+      <td align="center"><b>3D Output</b></td>
+    </tr>
+    <tr>
+      <td><img src="readme_images/image15.png" width="100%" alt="Input Scene 2"></td>
+      <td><img src="readme_images/image16.png" width="100%" alt="3D Output 2"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><img src="readme_images/image17.png" width="100%" alt="3D Output 2 - Side View"></td>
+    </tr>
+  </table>
+</div>
 
-**Output:**
-![3D Output](readme_images/image16.png)
-![3D Output](readme_images/image17.png)
+### Height Sensitivity Analysis
 
-### Height Sensitivity
+The algorithm demonstrates high sensitivity to height differences, as shown in the pill box reconstruction:
 
-The algorithm is sensitive to height differences, as demonstrated by the pill box and its lid:
-
-![Height Sensitivity](readme_images/image18.png)
-![Height Sensitivity](readme_images/image19.png)
+<div align="center">
+  <img src="readme_images/image18.png" width="45%" alt="Height Sensitivity - Top View">
+  <img src="readme_images/image19.png" width="45%" alt="Height Sensitivity - Side View">
+</div>
 
 ## Limitations
 
