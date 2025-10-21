@@ -1,5 +1,9 @@
 # 3D Photography on Your Desk
 
+https://github.com/user-attachments/assets/1c49a74f-5b52-4437-8f15-c5890c38e590
+
+![Results](readme_images/image10.png)
+
 A Python implementation of the paper "3D photography on your desk" that reconstructs 3D scenes from a single non-moving camera using shadow-based projective geometry.
 
 **Authors:** Ohad Klein, Aviel Raclaw  
@@ -168,7 +172,7 @@ The `main.py` script performs these steps in sequence:
   </table>
 </div>
 
-### 📏 Height Sensitivity Analysis
+### Height Sensitivity Analysis
 
 The algorithm demonstrates high sensitivity to height differences, as shown in the pill box reconstruction:
 
