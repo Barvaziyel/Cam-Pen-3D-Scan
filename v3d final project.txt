@@ -1,0 +1,243 @@
+Vision 3D Final Project
+3D photography on your desk
+
+Based on paper
+https://www-labs.iro.umontreal.ca/~roys/predoc/3dphotography.pdf
+
+By
+Ohad Klein
+Aviel Raclaw
+
+The paper in a nutshell
+The paper aims to reconstruct a 3D scene from a degenerate 2D setup,
+taken from a single non-moving camera.
+Using shadows cast on the scene and projective geometry, one is able
+to find the 3D location of each pixel in the image, with respect to some
+predefined coordinate system.
+At each frame a pencil casts on the scene a straight shadow line, which
+bends in correspondence to object height.
+This method provides us with temporal information regarding each
+pixel, and with this information we are able to construct the 3D scene.
+
+The paper in a nutshell
+The 3D location of each pixel on the
+shadow line is computed as the
+intersection between:
+-
+
+-
+
+a line determined by the camera
+center and the pixel’s projection on
+the floor plane.
+A plane determined by two points
+on both edges of the shadow line,
+and the light source location.
+[image1.png]
+
+Our steps for
+generating a 3D scene
+
+Initial setup - defining the coordinate system &
+locating camera center
+
+After setting up a clean white background for the scan (to
+avoid noise), set up the camera.
+Finding camera calibration:
+-
+
+Using 2 checkerboards placed perpendicular to one
+another, choose a point as the origin.
+Choose 6 independent points on the checkerboards,
+and match the 3D coordinate points to their
+corresponding 2D pixel coordinates in the image.
+Using SVD, perform extrinsic camera calibration and
+get the camera matrix.
+Take the camera center coordinates as the null space
+of the camera matrix.
+[image2.png]
+[image3.png]
+
+Initial setup - light source
+Set up light source. Using a pencil of known length in the coordinate
+system units, we can find the light source location in the 3D coordinate
+system:
+-
+
+Get at least 2 photos of the pencil standing up in different
+locations.
+(In practice we took 3 photos.)
+
+Initial setup - light source
+-
+
+Using the camera matrix, get the 3D locations of the pencil tip shadow and
+the pencil base (assuming Z=0). The pencil tip is obtained by known height.
+Assuming lines on floor are 2D (so they must intersect unless parallel), we'll
+find their 2D intersection which is the x,y coordinates of the light source.
+(In practice, we find the intersection of each pair of 2 lines, and later we take
+the mean of all intersections.)
+
+Initial setup - light source
+-
+
+-
+
+To find the Z coordinate of the light source, we compute for some pair (pencil tip
+shadow, pencil tip) the direction vector d which defines the line between tips
+shadow_tip + t*d. Noting that the light source is also on this line, we find the t for
+which light_source = shadow_tip + t*d and use it to find Z.
+(In practice, we already computed 3 possibilities for the X,Y of the light source, so
+we can compute t = (X - shadow_tip_x) / d. Then we get Z = shadow_tip_z + t*d.)
+Now we have 3 possibilities for the 3D location of the light source - we take the
+final point (X, Y, Z) as their mean.
+[image4.png]
+[image5.png]
+[image6.png]
+
+Scene capture
+-
+
+Place object for scanning in front of camera.
+While filming, slowly move pencil-like object across light source,
+creating a shadow that moves over the object being scanned.
+[MOVIE.mp4]
+
+Scene capture
+We’d now like to get the “shadow time” of each pixel - the first frame in
+which the pixel is under a shadow.
+We will later use the shadow times to infer the 3D location of each pixel.
+-
+
+Initiate a table ts with shape == image.shape and values -1.
+Iterate over the frames in the (grayscale) video;
+at each frame t,
+for each pixel (x,y) in the image,
+set ts[x,y] = t if and only if t is the first frame at
+which:
+|video[t,x,y] - video[0,x,y]| > threshold
+(we set the threshold to 70 like the paper suggests).
+
+Scene capture
+Now we wish to find, at each frame t, the equation of the shadow line at
+that frame. The equation can be defined by two points on that line. Like
+the paper suggests, we take points from both edges of the line - left
+and right.
+-
+
+Create two arrays lefts, rights of the size of the number of frames
+in the scanned scene, and fill them with values -1
+Iterate over the frames, at each frame iterate over the columns of
+the image: first from left to right in order to find the left point, then
+in reverse to find the right point.
+Set lefts[t] (rights[t]) = (x,y) if and only if ts[x,y] = t (x,y enters the
+shadow at frame t), and all its neighbors x’,y’ hold |ts[x,y] - ts[x’,y’]|
+<= 1 (to filter out noisy pixels).
+
+Scene capture
+Now that we have the lefts and rights pixel points of each frame’s shadow
+line, we are ready to find the 3D location of each pixel in the image.
+For pixel (x,y) we infer the 3D location by following these steps:
+-
+
+Get t = ts[x,y], the index of the frame where (x,y) enters the shadow.
+Finding the shadow plane:
+- Get a, b = lefts[t], rights[t], the 2 pixel points on the shadow line
+edges. Since these points lie on the floor plane, we know that their
+3D corresponding points hold Z==0. Using this and the camera
+matrix, we can solve with SVD to find the point A (B) = (X,Y,0) such
+that (X,Y,0)*camera_matrix=a (b).
+- Using A, B and the light_source we found earlier, we now know the
+shadow plane equation.
+
+Scene capture
+Finding the line between the camera center and (x,y):
+-
+
+We want to find another point on that line, since we do not know
+the 3D representation of (x,y).
+Using the same method as with a,b, we assume that (x,y) lies on
+the floor plane and find the corresponding (X’,Y’,0) point on the
+plane.
+The actual 3D representation of (x,y) lies on the line between the
+camera center and the point (X’,Y’,0).
+
+Now that we know both the line and the plane which our point lies on,
+we can find it by intersecting them.
+
+Scene capture
+To find the intersection between the line and the plane we note that:
+-
+
+If the plane is defined by a normal N = (a,b,c) and a point pp,
+and the line is defined by a point pl and vector d s.t. pl + t*d defines
+any point on the line,
+So, a point p0 = pl + t0*d lies on the plane iff p0 - pp is orthogonal
+to N
+iff dot(N, p0 - pp) = 0
+iff dot(N, pl + t0*d - pp) = 0
+iff dot(N, pl - pp) + t0 * dot(N, d) = 0
+iff t0 = -dot(N, pl - pp) / dot(N, d)
+
+We take N=(A-light_source)X(B-light_source) and pp=light_source,
+and pl=camera_center and d=(X’,Y’,0)-camera_center.
+
+Scene capture
+Finally, after finding t0, we can substitute it for t in the line equation to
+get the 3D coordinates of the pixel (x, y):
+(X,Y,Z) = camera_center + t0 * ((X’,Y’,0) - camera_center)
+
+Following these steps for each pixel (x,y), we infer the entire 3D scene
+from the 2D video.
+
+Results
+[image10.png]
+[image11.png]
+
+More Results
+
+input
+[image12.png]
+
+output
+[image13.png]
+[image14.png]
+
+More Results
+
+input
+[image15.png]
+
+output
+[image16.png]
+[image17.png]
+
+Note the height difference between the pill box and its lid This emphasizes the process’ sensitivity.
+[image18.png]
+[image19.png]
+
+Limitations
+From trial and error, we discovered that this algorithm fails to generate
+a good 3D scene when one of the following holds:
+-
+
+The background of the scene is not bright enough, or has some
+darker areas.
+The items that are scanned are not bright enough, or have some
+darker areas.
+[image20.png] => [image21.png]
+
+Ideas for future exploration
+-
+
+Increase the contrast of the image to make light pixels lighter and
+dark pixels darker, and see if this makes the result more clear, since
+by doing this we can get rid of some of the noise in the image.
+Playing with the threshold value to make the shadow detection
+more \ less sensitive.
+Make a scan “ensemble”: run the scan multiple times from different
+shadow angles (by moving the light source and the pencil) and take
+the 3D points as a weighted average of the different results, to get
+a clear and full coverage of the scene.
+
+
